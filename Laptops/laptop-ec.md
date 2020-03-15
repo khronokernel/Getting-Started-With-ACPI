@@ -19,6 +19,9 @@ When this happens you need to figure out which is the main and which is not, it'
 
 Note that only the main EC needs renaming, if you only have one `PNP0C09` then it is automatically your main regardless of properties.
 
+> What happens if `PNP0C09` already named `Device (EC)`
+
+This mean you don't have to apply EC patch!
 
 # Applying your EC patch
 
