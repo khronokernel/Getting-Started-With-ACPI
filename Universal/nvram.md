@@ -1,22 +1,16 @@
 # Fixing NVRAM
 
-This SSDT is required for all "true" 300 series motherboards and newer(Z370 is excluded), it specifically brings back NVRAM support and requires very little configuration for the end user.
+**Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we've decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as [Dortania](https://github.com/dortania).**
 
-* B360
-* B365
-* H310
-* H370
-* Z390
-* 400 series (Cometlake)
-* 495 series (Icelake) 
+Links to the new sites:
 
-By default it uses `PCI0.LPCB` for the PCI and LowPinCount path. The device names can vary between `PC00` and `PCI0` for PCI path and `LPCB`, `LBC` and `LBC0` for  LowPinCount path. To see what you have:
+* [OpenCore Desktop Guide](https://dortania.github.io/OpenCore-Desktop-Guide/)
+* [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
+* [GPU Buyers Guide](https://dortania.github.io/GPU-Buyers-Guide/)
+* [Wireless Buyers Guide](https://dortania.github.io/Wireless-Buyers-Guide/)
+* [Anti-Hackintosh Buyers Guide](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/)
 
-* Finding the LowPinCount path: 
-   * Intel: Search `Name (_ADR, 0x001F0000)`
-* Finding the PCI path: 
-   * Intel: Search `PNP0A08` (If multiple show up, use the first one)
 
-![](https://cdn.discordapp.com/attachments/456913818467958789/670148514197667840/Screen_Shot_2020-01-23_at_11.08.30_PM.png)
+If you're looking for this guide, you can find it here:
 
-## [Now you're ready to compile the SSDT!](/Manual/compile.md)
+# [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)

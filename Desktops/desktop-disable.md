@@ -1,52 +1,16 @@
 # Disabling unsupported GPUs(Desktops)
 
-So this is mainly needed for GPUs that are not supported in macOS, mainly this will be Nvidia users who wish to pair an AMD GPU for macOS use. While WhateverGreen does support the boot-arg `-wegnoegpu`, this only works when running on iGPU so for the rest of us we'll need to make an SSDT.
+**Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we've decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as [Dortania](https://github.com/dortania).**
 
-So to disable a specific GPU, we need to find a couple things:
+Links to the new sites:
 
-* ACPI Path of the GPU
-* [SSDT-GPU-DISABLE](https://github.com/khronokernel/Getting-Started-With-ACPI/blob/master/extra-files/SSDT-GPU-DISABLE.dsl.zip)
-
-## Finding the ACPI Path of the GPU
-
-To find the PCI path of a GPU is fairly simple, best way to find it is running Windows: 
-
-* Open Device Manager
-* Select Display Adapters, then right click your GPU and select Properties
-* Under the Details Tab, search for "Location Paths"
-   * Note some GPUs may be hiding under "BIOS device name"
-
-![](https://cdn.discordapp.com/attachments/456913818467958789/675210740231176212/unknown.png)
-
-![Credit to 1Revenger1 for the image](https://cdn.discordapp.com/attachments/683011276938543134/695396807739441232/unknown-4.png)
+* [OpenCore Desktop Guide](https://dortania.github.io/OpenCore-Desktop-Guide/)
+* [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
+* [GPU Buyers Guide](https://dortania.github.io/GPU-Buyers-Guide/)
+* [Wireless Buyers Guide](https://dortania.github.io/Wireless-Buyers-Guide/)
+* [Anti-Hackintosh Buyers Guide](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/)
 
 
-The second "ACPI" is what we care about:
-```
-ACPI(_SB_)#ACPI(PC02)#ACPI(BR2A)#ACPI(PEGP)#PCI(0000)#PCI(0000)
-```
+If you're looking for this guide, you can find it here:
 
-Now converting this to an ACPI path is quite simple, remove the `#ACPI` and `#PCI(0000)`:
-
-```
-`_SB_.PC02.BR2A.PEGP
-```
-And voila! We've found our ACPI path, now that we have everything we're ready to get cooking
-
-## Making the SSDT
-
-To start grab our [SSDT-GPU-DISABLE](https://github.com/khronokernel/Getting-Started-With-ACPI/blob/master/extra-files/SSDT-GPU-DISABLE.dsl.zip) and open it up. Here there's a couple things to change:
-
-```
-External (_SB_.PCI0.PEG0.PEGP, DeviceObj)
-Method (_SB.PCI0.PEG0.PEGP._DSM, 4, NotSerialized)
-```
-For our example, we'll change all mentions of :
-
-* `PCI0` with `PC02`
-* `PEG0` with `BR2A`
-
-Hint: If your ACPI path is a bit shorter than the example, this is fine. Just make sure the ACPI paths are correct to your device, some users may also need to adapt `_SB_` to their path
-
-## [Now you're ready to compile the SSDT!](/Manual/compile.md)
-
+# [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
