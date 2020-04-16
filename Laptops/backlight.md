@@ -1,21 +1,16 @@
 # Fixing Backlight
 
-So what this SSDT does is create a PNLF device for macOS to play with, specifically one with a hardware ID of `APP0002`. WhateverGreen will handle the rest of the work
+**Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we've decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as [Dortania](https://github.com/dortania).**
+
+Links to the new sites:
+
+* [OpenCore Desktop Guide](https://dortania.github.io/OpenCore-Desktop-Guide/)
+* [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
+* [GPU Buyers Guide](https://dortania.github.io/GPU-Buyers-Guide/)
+* [Wireless Buyers Guide](https://dortania.github.io/Wireless-Buyers-Guide/)
+* [Anti-Hackintosh Buyers Guide](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/)
 
 
-No configuration required for most, just drop the prebuilt file into your EFI:
-* [SSDT-PNLF](https://github.com/khronokernel/Getting-Started-With-ACPI/blob/master/extra-files/SSDT-PNLF.aml)
-   * For most users
-* [SSDT-PNLF-CFL](https://i.applelife.ru/2019/12/463488_SSDT-PNLFCFL.aml.zip)
-   * For Coffeelake users if the regular SSDT doesn't work, try SSDT-PNLF first and do not mix together
+If you're looking for this guide, you can find it here:
 
-Note: there are some rare cases where the iGPU is called `GPU0` or `VID`in the DSDT, you can double check by searching for `PCI0.GFX0`, `PCI0.VID` and `PCI0.GPU0`. Whichever shows up is your device
-
-If Windows has been installed on the device, you can also do the following:
-
-```text
-Device Manager -> Display Adapters -> Properties -> Details > BIOS device name
-```
-* Note some GPUs may be hiding under "BIOS device name"
-
-![Credit to 1Revenger1 for the image](https://cdn.discordapp.com/attachments/683011276938543134/695396807739441232/unknown-4.png)
+# [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)

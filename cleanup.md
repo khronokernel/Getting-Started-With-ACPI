@@ -1,20 +1,16 @@
 # Cleanup
 
-So you've made all your SSDTs but now there's one thing left: Adding them to Opencore
+**Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we've decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as [Dortania](https://github.com/dortania).**
 
-The 2 main locations:
+Links to the new sites:
 
-* EFI/OC/ACPI (Only **.aml** files, reminder to [compile your SSDTs](/Manual/compile.md))
-* config.plist -> ACPI -> Add
+* [OpenCore Desktop Guide](https://dortania.github.io/OpenCore-Desktop-Guide/)
+* [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
+* [GPU Buyers Guide](https://dortania.github.io/GPU-Buyers-Guide/)
+* [Wireless Buyers Guide](https://dortania.github.io/Wireless-Buyers-Guide/)
+* [Anti-Hackintosh Buyers Guide](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/)
 
-You can save yourself some work with the config.plist by running Cmd/Ctrl+R in ProperTree. **Reminder do not add your DSDT.aml to your EFI**
 
-Users of `FixHPET` will also need to merge oc_patches.plist into their config.plist
+If you're looking for this guide, you can find it here:
 
-Steps to do this:
-
-* Open both files, 
-* Delete the `ACPI -> Patch` section from config.plist
-* Copy the `ACPI -> Patch` section from patches.plist
-* Paste into where old patches were in config.plist
-
+# [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
