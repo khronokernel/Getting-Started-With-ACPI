@@ -409,29 +409,17 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="fixing-nvram">Fixing NVRAM</h1>
-<p>This SSDT is required for all &quot;true&quot; 300 series motherboards and newer(Z370 is excluded), it specifically brings back NVRAM support and requires very little configuration for the end user.</p>
+<p><strong>Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we&apos;ve decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as <a href="https://github.com/dortania" target="_blank">Dortania</a>.</strong></p>
+<p>Links to the new sites:</p>
 <ul>
-<li>B360</li>
-<li>B365</li>
-<li>H310</li>
-<li>H370</li>
-<li>Z390</li>
-<li>400 series (Cometlake)</li>
-<li>495 series (Icelake) </li>
+<li><a href="https://dortania.github.io/OpenCore-Desktop-Guide/" target="_blank">OpenCore Desktop Guide</a></li>
+<li><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></li>
+<li><a href="https://dortania.github.io/GPU-Buyers-Guide/" target="_blank">GPU Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Wireless-Buyers-Guide/" target="_blank">Wireless Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/" target="_blank">Anti-Hackintosh Buyers Guide</a></li>
 </ul>
-<p>By default it uses <code>PCI0.LPCB</code> for the PCI and LowPinCount path. The device names can vary between <code>PC00</code> and <code>PCI0</code> for PCI path and <code>LPCB</code>, <code>LBC</code> and <code>LBC0</code> for  LowPinCount path. To see what you have:</p>
-<ul>
-<li>Finding the LowPinCount path: <ul>
-<li>Intel: Search <code>Name (_ADR, 0x001F0000)</code></li>
-</ul>
-</li>
-<li>Finding the PCI path: <ul>
-<li>Intel: Search <code>PNP0A08</code> (If multiple show up, use the first one)</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://cdn.discordapp.com/attachments/456913818467958789/670148514197667840/Screen_Shot_2020-01-23_at_11.08.30_PM.png" alt=""></p>
-<h2 id="now-youre-ready-to-compile-the-ssdt"><a href="../Manual/compile.html">Now you&apos;re ready to compile the SSDT!</a></h2>
+<p>If you&apos;re looking for this guide, you can find it here:</p>
+<h1 id="getting-started-with-acpi"><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></h1>
 
                                 
                                 </section>
@@ -475,7 +463,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"NVRAM PMC","level":"5.3","depth":1,"next":{"title":"IRQ Fix","level":"5.4","depth":1,"path":"Universal/irq.md","ref":"Universal/irq.md","articles":[]},"previous":{"title":"AWAC vs RTC","level":"5.2","depth":1,"path":"Universal/awac.md","ref":"Universal/awac.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Universal/nvram.md","mtime":"2020-04-05T00:41:26.348Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-05T00:42:19.869Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"NVRAM PMC","level":"5.3","depth":1,"next":{"title":"IRQ Fix","level":"5.4","depth":1,"path":"Universal/irq.md","ref":"Universal/irq.md","articles":[]},"previous":{"title":"AWAC vs RTC","level":"5.2","depth":1,"path":"Universal/awac.md","ref":"Universal/awac.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Universal/nvram.md","mtime":"2020-04-16T00:01:34.701Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-16T00:02:24.917Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

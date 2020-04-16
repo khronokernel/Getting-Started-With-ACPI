@@ -409,61 +409,17 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="disabling-laptop-dgpus">Disabling laptop dGPUs</h1>
-<p>So with laptops, we can hide the dGPU from macOS with the little boot-arg called <code>-wegnoegpu</code> from WhateverGreen. But one small problem, the dGPU is still pulling power draining your battery slowly. We&apos;ll be going over 2 methods for disabling the dGPU in a laptop:</p>
+<p><strong>Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we&apos;ve decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as <a href="https://github.com/dortania" target="_blank">Dortania</a>.</strong></p>
+<p>Links to the new sites:</p>
 <ul>
-<li><a href="laptop-disable.html#optimus-method">Optimus Method</a></li>
-<li><a href="laptop-disable.html#bumblebee-method">Bumblebee Method</a></li>
+<li><a href="https://dortania.github.io/OpenCore-Desktop-Guide/" target="_blank">OpenCore Desktop Guide</a></li>
+<li><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></li>
+<li><a href="https://dortania.github.io/GPU-Buyers-Guide/" target="_blank">GPU Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Wireless-Buyers-Guide/" target="_blank">Wireless Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/" target="_blank">Anti-Hackintosh Buyers Guide</a></li>
 </ul>
-<p>Note that this is not needed for install, but recommended for post-install</p>
-<h2 id="optimus-method">Optimus Method</h2>
-<p>How this works is that we call the <code>.off</code> method found on Optimus GPUs, this is the expected way to power off a GPU but some may find their dGPU will power back up later on. Mainly seen in Lenovo&apos;s, the Optimus method should work for most users:</p>
-<p>To start, grab <a href="https://github.com/khronokernel/Getting-Started-With-ACPI/blob/master/extra-files/SSDT-dGPU-Off.dsl.zip" target="_blank">SSDT-dGPU-Off.dsl</a></p>
-<p>Next we need to get on Windows, and head to the following:</p>
-<pre><code class="lang-text">Device Manager -&gt; Display Adapters -&gt; dGPU -&gt; Properties -&gt; Details &gt; BIOS device name
-</code></pre>
-<ul>
-<li>Note some GPUs may be hiding under &quot;BIOS device name&quot;</li>
-</ul>
-<p>This should provided you with an ACPI path for your dGPU, most commonly:</p>
-<ul>
-<li>Nvidia dGPU: <code>\_SB.PCI0.PEG0.PEGP</code></li>
-<li>AMD dGPU: <code>\_SB.PCI0.PEGP.DGFX</code></li>
-</ul>
-<p><img src="https://cdn.discordapp.com/attachments/683011276938543134/695396807739441232/unknown-4.png" alt="Credit to 1Revenger1 for the image"></p>
-<p>Now with that, we&apos;ll need to change the ACPI path in the SSDT. Main sections:</p>
-<pre><code class="lang-text">External(_SB.PCI0.PEG0.PEGP._OFF, MethodObj)
-</code></pre>
-<pre><code class="lang-text">If (CondRefOf(\_SB.PCI0.PEG0.PEGP._OFF)) { \_SB.PCI0.PEG0.PEGP._OFF() }
-</code></pre>
-<p>Once adapted to your config, head to the compile section</p>
-<ul>
-<li>For those with sleep issues, you can refer to the original <a href="https://www.tonymacx86.com/threads/guide-disabling-discrete-graphics-in-dual-gpu-laptops.163772/" target="_blank">Rehabman thread</a></li>
-</ul>
-<h2 id="bumblebee-method">Bumblebee Method</h2>
-<p>With some machines, the simple <code>.off</code> call won&apos;t keep the card off properly, that&apos;s where the Bumblebee method comes in. This SSDT will actually send the dGPU into D3 state being the lowest power state a device can support. Credit to Mameo for the original adaptation.</p>
-<p>To start, grab <a href="https://github.com/khronokernel/Getting-Started-With-ACPI/blob/master/extra-files/SSDT-NoHybGfx.dsl.zip" target="_blank">SSDT-NoHybGfx.dsl</a></p>
-<p>Next we need to get on Windows, and head to the following:</p>
-<pre><code class="lang-text">Device Manager -&gt; Display Adapters -&gt; dGPU -&gt; Properties -&gt; Details &gt; BIOS device name
-</code></pre>
-<p>This should provided you with an ACPI path for your dGPU, most commonly:</p>
-<ul>
-<li>Nvidia dGPU: <code>\_SB.PCI0.PEG0.PEGP</code></li>
-<li>AMD dGPU: <code>\_SB.PCI0.PEGP.DGFX</code></li>
-</ul>
-<p>Now with that, we&apos;ll need to change the ACPI path in the SSDT. Main sections:</p>
-<pre><code class="lang-text">External (_SB_.PCI0.PEG0.PEGP._DSM, MethodObj)    // dGPU ACPI Path
-External (_SB_.PCI0.PEG0.PEGP._PS3, MethodObj)    // dGPU ACPI Path
-</code></pre>
-<pre><code class="lang-text">If ((CondRefOf (\_SB.PCI0.PEG0.PEGP._DSM) &amp;&amp; CondRefOf (\_SB.PCI0.PEG0.PEGP._PS3)))
-</code></pre>
-<pre><code class="lang-text"> // Card Off Request
- \_SB.PCI0.PEG0.PEGP._DSM (ToUUID (&quot;a486d8f8-0bda-471b-a72b-6042a6b5bee0&quot;), 0x0100, 0x1A, Buffer (0x04)
-</code></pre>
-<pre><code class="lang-text"> // Card Off
-\_SB.PCI0.PEG0.PEGP._PS3 ()
-</code></pre>
-<p>Once adapted to your config, head to the compile section</p>
-<h2 id="now-youre-ready-to-compile-the-ssdt"><a href="../Manual/compile.html">Now you&apos;re ready to compile the SSDT!</a></h2>
+<p>If you&apos;re looking for this guide, you can find it here:</p>
+<h1 id="getting-started-with-acpi"><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></h1>
 
                                 
                                 </section>
@@ -507,7 +463,7 @@ External (_SB_.PCI0.PEG0.PEGP._PS3, MethodObj)    // dGPU ACPI Path
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Disabling laptop dGPUs","level":"4.4","depth":1,"next":{"title":"Plugin type","level":"5.1","depth":1,"path":"Universal/plug.md","ref":"Universal/plug.md","articles":[]},"previous":{"title":"Trackpad GPI0","level":"4.3","depth":1,"path":"Laptops/trackpad.md","ref":"Laptops/trackpad.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Laptops/laptop-disable.md","mtime":"2020-04-05T00:41:26.348Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-05T00:42:19.869Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Disabling laptop dGPUs","level":"4.4","depth":1,"next":{"title":"Plugin type","level":"5.1","depth":1,"path":"Universal/plug.md","ref":"Universal/plug.md","articles":[]},"previous":{"title":"Trackpad GPI0","level":"4.3","depth":1,"path":"Laptops/trackpad.md","ref":"Laptops/trackpad.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Laptops/laptop-disable.md","mtime":"2020-04-16T00:01:34.701Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-16T00:02:24.917Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

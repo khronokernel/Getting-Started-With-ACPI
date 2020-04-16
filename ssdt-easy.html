@@ -409,84 +409,17 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="ssdts-the-easy-way">SSDTs: The easy way</h1>
-<p>So here we&apos;ll be using a super simple tool made by CorpNewt: <a href="https://github.com/corpnewt/SSDTTime" target="_blank">SSDTTime</a></p>
-<p>What this tool does is dumps your DSDT from your firmware, and then creates SSDTs based off your DSDT. <strong>This must be done on the target machine running either Windows or Linux</strong></p>
-<h2 id="so-what-cant-ssdttime-do">So what <strong>can&apos;t</strong> SSDTTime do?:</h2>
+<p><strong>Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we&apos;ve decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as <a href="https://github.com/dortania" target="_blank">Dortania</a>.</strong></p>
+<p>Links to the new sites:</p>
 <ul>
-<li><strong>HEDT SSDTs</strong>: <ul>
-<li>The ACPI is odd on these platforms so manual work is required</li>
-<li>This includes X79, X99 and X299 systems</li>
+<li><a href="https://dortania.github.io/OpenCore-Desktop-Guide/" target="_blank">OpenCore Desktop Guide</a></li>
+<li><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></li>
+<li><a href="https://dortania.github.io/GPU-Buyers-Guide/" target="_blank">GPU Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Wireless-Buyers-Guide/" target="_blank">Wireless Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/" target="_blank">Anti-Hackintosh Buyers Guide</a></li>
 </ul>
-</li>
-<li><strong>Laptop EC fix</strong>: <ul>
-<li>This is because you need to use an ACPI rename over an SSDT on laptops</li>
-</ul>
-</li>
-<li><strong>SSDT-PNLF</strong>: <ul>
-<li>Need to be configured to your system</li>
-</ul>
-</li>
-<li><strong>SSDT-GPI0</strong>: <ul>
-<li>Need to be configured to your system</li>
-</ul>
-</li>
-<li><strong>AWAC and RTC0 SSDTs</strong>: <ul>
-<li>300 series intel boards will also need to figure his out(Z390 systems are most common for requiring this but some Gigabyte Z370 do as well)</li>
-</ul>
-</li>
-<li><strong>PMC SSDT</strong>: <ul>
-<li>For fixing 300 series intel NVRAM</li>
-</ul>
-</li>
-<li><strong>USBX SSDT</strong>: <ul>
-<li>This is included on sample SSDTs but SSDTTime only makes the SSDT-EC part, Skylake and newer users can grab a prebuilt here: <a href="https://github.com/khronokernel/Opencore-Vanilla-Desktop-Guide/blob/master/extra-files/SSDT-USBX.aml" target="_blank">SSDT-USBX.aml</a></li>
-</ul>
-</li>
-</ul>
-<p>For users who don&apos;t have all the options avaible to them in SSDTTime, you can follow the &quot;SSDTs: The long way&quot; section. You can still use SSDTTime for SSDTs it support for you.</p>
-<h2 id="running-ssdttime">Running SSDTTime</h2>
-<p>Run the <code>SSDTTime.bat</code> file as Admin on the target machine and you should see something like this:</p>
-<p><img src="https://cdn.discordapp.com/attachments/456913818467958789/669260286007705623/unknown.png" alt=""></p>
-<p>What are all these options?:</p>
-<ul>
-<li><code>1. FixHPET    - Patch out IRQ Conflicts</code><ul>
-<li>IRQ patching, mainly needed for X79, X99 and laptop users</li>
-</ul>
-</li>
-<li><code>2. FakeEC     - OS-aware Fake EC</code><ul>
-<li>This is the SSDT-EC, required for Catalina users</li>
-</ul>
-</li>
-<li><code>3. PluginType - Sets plugin-type = 1 on CPU0/PR00</code><ul>
-<li>This is the SSDT-PLUG, for Intel only</li>
-</ul>
-</li>
-<li><code>4. Dump DSDT  - Automatically dump the system DSDT</code><ul>
-<li>Dumps your DSDT from your firmware</li>
-</ul>
-</li>
-</ul>
-<p>What we want to do is select option <code>4. Dump DSDT</code> first, then select the appropriate option(s) for your system. </p>
-<blockquote>
-<p>What about USBX?</p>
-</blockquote>
-<p>For Skylake and newer plus AMD, you can grab a prebuilt file here: <a href="https://github.com/khronokernel/Opencore-Vanilla-Desktop-Guide/blob/master/extra-files/SSDT-USBX.aml" target="_blank">SSDT-USBX.aml</a>. This file is plug and play and requires no device configuration, <strong>do not use on Broadwell and older</strong>.</p>
-<p><strong>Troubleshooting note</strong>: See <a href="https://khronokernel.github.io/Opencore-Vanilla-Desktop-Guide/troubleshooting/troubleshooting.html" target="_blank">General Troubleshooting</a> if you&apos;re having issues running SSDTTime</p>
-<h2 id="adding-to-opencore">Adding to OpenCore</h2>
-<p>Don&apos;t forget that SSDTs need to be added to Opencore, reminder that .aml is complied, .dsl is code. <strong>Add only the .aml file</strong>:</p>
-<ul>
-<li>EFI/OC/ACPI</li>
-<li>config.plist -&gt; ACPI -&gt; Add</li>
-</ul>
-<p>Reminder that Cmd/Crtl+R with ProperTree pointed at your OC folder will add all your SSDTs, kexts and .efi drivers to the config for you. <strong>Do not add your DSDT to OpenCore, its already in your firmware</strong>. If you are unsure what this is referring to, go back to the OpenCore guide and select your config based of the architecture of your CPU.</p>
-<p>Users of <code>FixHPET</code> will also need to merge oc_patches.plist into their config.plist</p>
-<p>Steps to do this:</p>
-<ul>
-<li>Open both files, </li>
-<li>Delete the <code>ACPI -&gt; Patch</code> section from config.plist</li>
-<li>Copy the <code>ACPI -&gt; Patch</code> section from patches.plist</li>
-<li>Paste into where old patches were in config.plist</li>
-</ul>
+<p>If you&apos;re looking for this guide, you can find it here:</p>
+<h1 id="getting-started-with-acpi"><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></h1>
 
                                 
                                 </section>
@@ -530,7 +463,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"SSDTs: Easy Way","level":"1.2","depth":1,"next":{"title":"SSDTs: Long Way","level":"1.3","depth":1,"path":"ssdt-long.md","ref":"ssdt-long.md","articles":[]},"previous":{"title":"Getting Started With ACPI","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"ssdt-easy.md","mtime":"2020-04-05T00:41:26.348Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-05T00:42:19.869Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"SSDTs: Easy Way","level":"1.2","depth":1,"next":{"title":"SSDTs: Long Way","level":"1.3","depth":1,"path":"ssdt-long.md","ref":"ssdt-long.md","articles":[]},"previous":{"title":"Getting Started With ACPI","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"ssdt-easy.md","mtime":"2020-04-16T00:01:34.701Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-16T00:02:24.917Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

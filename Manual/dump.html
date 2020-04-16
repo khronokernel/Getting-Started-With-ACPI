@@ -409,44 +409,17 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="getting-a-copy-of-our-dsdt">Getting a copy of our DSDT</h1>
-<p>So to start, we&apos;ll need to get a copy of your DSDT from your firmware. The easiest way is grabbing the DSDT.aml SSDTTime dumped for us earlier but here are some other options:</p>
+<p><strong>Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we&apos;ve decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as <a href="https://github.com/dortania" target="_blank">Dortania</a>.</strong></p>
+<p>Links to the new sites:</p>
 <ul>
-<li><a href="https://github.com/corpnewt/SSDTTime" target="_blank">SSDTTime</a><ul>
-<li>Supports both Windows and Linux for DSDT dumping</li>
-<li><code>4. Dump DSDT - Automatically dump the system DSDT</code></li>
+<li><a href="https://dortania.github.io/OpenCore-Desktop-Guide/" target="_blank">OpenCore Desktop Guide</a></li>
+<li><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></li>
+<li><a href="https://dortania.github.io/GPU-Buyers-Guide/" target="_blank">GPU Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Wireless-Buyers-Guide/" target="_blank">Wireless Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/" target="_blank">Anti-Hackintosh Buyers Guide</a></li>
 </ul>
-</li>
-<li><a href="https://github.com/acidanthera/MaciASL/releases" target="_blank">MaciASL</a><ul>
-<li>Open the app on the target machine(must already be running macOS) and the system&apos;s DSDT will show, then File -&gt; SaveAs <code>System DSDT</code>. Make sure the file format is ACPI Machine Language Binary(.AML), this will require the machine to be running macOS</li>
-<li>Do note that all ACPI patches from clover/OpenCore will be applied to the DSDT</li>
-</ul>
-</li>
-<li><a href="https://acpica.org/sites/acpica/files/iasl-win-20180105.zip" target="_blank">acpidump.exe</a><ul>
-<li>In command prompt run <code>path/to/acpidump.exe -b -n DSDT -z</code>, this will dump your DSDT as a .dat file. Rename this to DSDT.aml</li>
-</ul>
-</li>
-<li>F4 in Clover Boot menu<ul>
-<li>DSDT can be found in <code>EFI/CLOVER/ACPI/origin</code>, the folder <strong>must</strong> exist before dumping</li>
-</ul>
-</li>
-<li><a href="https://github.com/khronokernel/Opencore-Vanilla-Desktop-Guide/tree/master/extra-files/acpidump.efi.zip" target="_blank"><code>acpidump.efi</code></a><ul>
-<li>Add this to <code>EFI/OC/Tools</code> and in your config under <code>Misc -&gt; Tools</code> with the argument: <code>-b -n DSDT -z</code> and select this option in OpenCore&apos;s picker. Rename the DSDT.dat to DSDT.aml. Tool is provided by <a href="https://github.com/acpica/acpica/tree/master/source/tools/acpidump" target="_blank">acpica</a></li>
-</ul>
-</li>
-</ul>
-<p>If OpenCore is having issues running acpidump, you can call it from the shell with <a href="https://github.com/acidanthera/OpenCoreShell/releases" target="_blank">OpenCoreShell</a>(reminder to add to both <code>EFI/OC/Tools</code> and in your config under <code>Misc -&gt; Tools</code> ):</p>
-<pre><code class="lang-text">shell&gt; fs0: // replace with proper drive
-
-fs0:\&gt; dir // to verify this is the right directory
-
-Directory of fs0:\
-
-01/01/01 3:30p EFI
-
-fs0:\&gt; cd EFI\OC\Tools
-
-fs0:\EFI\OC\Tools&gt; acpidump.efi -b -n DSDT -z
-</code></pre>
+<p>If you&apos;re looking for this guide, you can find it here:</p>
+<h1 id="getting-started-with-acpi"><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></h1>
 
                                 
                                 </section>
@@ -490,7 +463,7 @@ fs0:\EFI\OC\Tools&gt; acpidump.efi -b -n DSDT -z
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Dumping the DSDT","level":"2.1","depth":1,"next":{"title":"Decompiling and Compiling","level":"2.2","depth":1,"path":"Manual/compile.md","ref":"Manual/compile.md","articles":[]},"previous":{"title":"SSDTs: Long Way","level":"1.3","depth":1,"path":"ssdt-long.md","ref":"ssdt-long.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Manual/dump.md","mtime":"2020-04-05T00:41:26.348Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-05T00:42:19.869Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Dumping the DSDT","level":"2.1","depth":1,"next":{"title":"Decompiling and Compiling","level":"2.2","depth":1,"path":"Manual/compile.md","ref":"Manual/compile.md","articles":[]},"previous":{"title":"SSDTs: Long Way","level":"1.3","depth":1,"path":"ssdt-long.md","ref":"ssdt-long.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Manual/dump.md","mtime":"2020-04-16T00:01:34.701Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-16T00:02:24.917Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

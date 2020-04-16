@@ -409,42 +409,18 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="fixing-trackpads">Fixing Trackpads</h1>
-<p>This SSDT is used to force enable our GPI0 for VoodooI2C to connect onto.</p>
-<p>With most modern laptop DSDTs, there&apos;s a variable called <code>GPEN</code> or <code>GPHD</code> which are used for setting the status of the GPI0 device. For us, we want to enable the device.</p>
-<h2 id="finding-our-gpi0">Finding our GPI0</h2>
-<p>So first things we need to do is find out what variable is used to enable our GPI0 device, lets open up our decompiled SSDT and search for <code>Device (GPI0)</code>. Should give you a desult similar to this:</p>
-<p><img src="https://media.discordapp.net/attachments/456913818467958789/677279455525208096/Screen_Shot_2020-02-12_at_3.25.27_PM.png?width=1674&amp;height=1256" alt=""></p>
-<p>What we care about from this is the <code>_STA</code> method:</p>
-<pre><code>Method (_STA, 0, NotSerialized)
-{
-    If ((GPHD == One))
-    {
-        Return (0x03)
-    }
+<p><strong>Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we&apos;ve decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as <a href="https://github.com/dortania" target="_blank">Dortania</a>.</strong></p>
+<p>Links to the new sites:</p>
+<ul>
+<li><a href="https://dortania.github.io/OpenCore-Desktop-Guide/" target="_blank">OpenCore Desktop Guide</a></li>
+<li><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></li>
+<li><a href="https://dortania.github.io/GPU-Buyers-Guide/" target="_blank">GPU Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Wireless-Buyers-Guide/" target="_blank">Wireless Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/" target="_blank">Anti-Hackintosh Buyers Guide</a></li>
+</ul>
+<p>If you&apos;re looking for this guide, you can find it here:</p>
+<h1 id="getting-started-with-acpi"><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></h1>
 
-    Return (0x0F)
-}
-</code></pre><p>What we want is for this to always return <code>0x0F</code> when booting macOS, so we want to make an SSDT that will return <code>GPHD == Zero</code> in macOS.</p>
-<p><strong>NOTE that you may have the other way around where GPHD needs to be set as <code>One</code> to return <code>0x0F</code></strong>. And your device name may also be different, don&apos;t throw random SSDTs in thinking it&apos;ll work</p>
-<p>Once you found the variable and what it should be set to, grab a copy of <a href="https://github.com/khronokernel/Getting-Started-With-ACPI/blob/master/extra-files/SSDT-GPI0.dsl" target="_blank">SSDT-GPI0.dsl</a> and make the required edits. Then clean up with compiling it</p>
-<h2 id="more-examples">More examples:</h2>
-<p><img src="https://media.discordapp.net/attachments/456913818467958789/677283983322775572/Screen_Shot_2020-02-12_at_3.34.26_PM.png?width=1674&amp;height=1704" alt=""></p>
-<p>With this example, we can see that we need both <code>SBRG</code> and <code>GPEN</code> to return <code>One</code>. If only one is present, it&apos;ll create some issues so in our SSDT we&apos;ll want to have both of them return <code>One</code>:</p>
-<pre><code>DefinitionBlock(&quot;&quot;, &quot;SSDT&quot;, 2, &quot;ACDT&quot;, &quot;GPI0&quot;, 0)
-{
-    External(GPEN, FieldUnitObj)
-    External(SBRG, FieldUnitObj)
-
-    Scope (\)
-    {
-        If (_OSI (&quot;Darwin&quot;))
-        {
-            GPEN = One
-            SBRG = One
-        }
-    }
-}
-</code></pre>
                                 
                                 </section>
                             
@@ -487,7 +463,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Trackpad GPI0","level":"4.3","depth":1,"next":{"title":"Disabling laptop dGPUs","level":"4.4","depth":1,"path":"Laptops/laptop-disable.md","ref":"Laptops/laptop-disable.md","articles":[]},"previous":{"title":"Backlight PNLF","level":"4.2","depth":1,"path":"Laptops/backlight.md","ref":"Laptops/backlight.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Laptops/trackpad.md","mtime":"2020-04-05T00:41:26.348Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-05T00:42:19.869Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Trackpad GPI0","level":"4.3","depth":1,"next":{"title":"Disabling laptop dGPUs","level":"4.4","depth":1,"path":"Laptops/laptop-disable.md","ref":"Laptops/laptop-disable.md","articles":[]},"previous":{"title":"Backlight PNLF","level":"4.2","depth":1,"path":"Laptops/backlight.md","ref":"Laptops/backlight.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Laptops/trackpad.md","mtime":"2020-04-16T00:01:34.701Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-16T00:02:24.917Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -409,96 +409,17 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="fixing-embedded-controller-laptop">Fixing Embedded Controller (Laptop)</h1>
-<p>To fix the ECs found in laptops, we&apos;ll be renaming them to look like the ones macOS expects. The reason for this is that many laptops break when you turn off their EC with an SSDT. So this is why we can&apos;t use the fancy SSDTTime to make a patch for us.</p>
-<p>To find out what EC you have, open your decompiled DSDT and search for <code>PNP0C09</code>. This should give you a result like this:</p>
-<p><img src="https://i.imgur.com/lQ4kpb9.png" alt=""></p>
-<p>As you can see our <code>PNP0C09</code> is found within the <code>Device (EC0)</code> meaning this is the device we want to rename.</p>
-<blockquote>
-<p>What happens if multiple <code>PNP0C09</code> show up</p>
-</blockquote>
-<p>When this happens you need to figure out which is the main and which is not, it&apos;s fairly easy to figure out. Check each controller for the following properties:</p>
+<p><strong>Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we&apos;ve decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as <a href="https://github.com/dortania" target="_blank">Dortania</a>.</strong></p>
+<p>Links to the new sites:</p>
 <ul>
-<li><code>_HID</code> (Hardware ID)</li>
-<li><code>_CRS</code> (Current Resource Settings)</li>
-<li><code>_GPE</code> (General Purpose Events)</li>
+<li><a href="https://dortania.github.io/OpenCore-Desktop-Guide/" target="_blank">OpenCore Desktop Guide</a></li>
+<li><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></li>
+<li><a href="https://dortania.github.io/GPU-Buyers-Guide/" target="_blank">GPU Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Wireless-Buyers-Guide/" target="_blank">Wireless Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/" target="_blank">Anti-Hackintosh Buyers Guide</a></li>
 </ul>
-<p>Note that only the main EC needs renaming, if you only have one <code>PNP0C09</code> then it is automatically your main regardless of properties.</p>
-<blockquote>
-<p>What if my main <code>PNP0C09</code> device is already called <code>Device (EC)</code>?</p>
-</blockquote>
-<p>Mainly relevant for Lenovo and a few other OEMs, when this happens that means that your Embedded Controller is ready to use in macOS! Do make sure that this <code>Device (EC)</code> is actually your main EC and not a secondary one. </p>
-<p><strong>And please verify that the DSDT hasn&apos;t already been patched by Clover or OpenCore</strong>, please dump it without booting either of them to be sure or triple check that there aren&apos;t any EC renames in your config already</p>
-<h1 id="applying-your-ec-patch">Applying your EC patch</h1>
-<p>As you can see from the table below, we&apos;ll be renaming our EC listed in the DSDT. Do note you cannot just throw random renames without checking which is the main EC first, as <strong>this can cause actual damage to your laptop.</strong></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Comment</th>
-<th style="text-align:left">Find*[HEX]</th>
-<th style="text-align:left">Replace[HEX]</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">change EC0 to EC</td>
-<td style="text-align:left">4543305f</td>
-<td style="text-align:left">45435f5f</td>
-</tr>
-<tr>
-<td style="text-align:left">change H_EC to EC</td>
-<td style="text-align:left">485f4543</td>
-<td style="text-align:left">45435f5f</td>
-</tr>
-<tr>
-<td style="text-align:left">change ECDV to EC</td>
-<td style="text-align:left">45434456</td>
-<td style="text-align:left">45435f5f</td>
-</tr>
-<tr>
-<td style="text-align:left">change PGEC to EC</td>
-<td style="text-align:left">50474543</td>
-<td style="text-align:left">45435f5f</td>
-</tr>
-</tbody>
-</table>
-<h2 id="inside-your-config">Inside your config:</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Comment</th>
-<th style="text-align:left">String</th>
-<th style="text-align:left">Change XXXX to EC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">Enabled</td>
-<td style="text-align:left">String</td>
-<td style="text-align:left">YES</td>
-</tr>
-<tr>
-<td style="text-align:left">Count</td>
-<td style="text-align:left">Number</td>
-<td style="text-align:left">0</td>
-</tr>
-<tr>
-<td style="text-align:left">Limit</td>
-<td style="text-align:left">Number</td>
-<td style="text-align:left">0</td>
-</tr>
-<tr>
-<td style="text-align:left">Find</td>
-<td style="text-align:left">Data</td>
-<td style="text-align:left">xxxxxxxx</td>
-</tr>
-<tr>
-<td style="text-align:left">Replace</td>
-<td style="text-align:left">Data</td>
-<td style="text-align:left">xxxxxxxx</td>
-</tr>
-</tbody>
-</table>
-<p><img src="https://cdn.discordapp.com/attachments/456913818467958789/668667268254793728/Screen_Shot_2020-01-19_at_9.04.50_PM.png" alt=""></p>
+<p>If you&apos;re looking for this guide, you can find it here:</p>
+<h1 id="getting-started-with-acpi"><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></h1>
 
                                 
                                 </section>
@@ -542,7 +463,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Embedded Controllers","level":"4.1","depth":1,"next":{"title":"Backlight PNLF","level":"4.2","depth":1,"path":"Laptops/backlight.md","ref":"Laptops/backlight.md","articles":[]},"previous":{"title":"Disabling desktop dGPUs","level":"3.2","depth":1,"path":"Desktops/desktop-disable.md","ref":"Desktops/desktop-disable.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Laptops/laptop-ec.md","mtime":"2020-04-05T00:41:26.348Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-05T00:42:19.869Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Embedded Controllers","level":"4.1","depth":1,"next":{"title":"Backlight PNLF","level":"4.2","depth":1,"path":"Laptops/backlight.md","ref":"Laptops/backlight.md","articles":[]},"previous":{"title":"Disabling desktop dGPUs","level":"3.2","depth":1,"path":"Desktops/desktop-disable.md","ref":"Desktops/desktop-disable.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Laptops/laptop-ec.md","mtime":"2020-04-16T00:01:34.701Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-16T00:02:24.917Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

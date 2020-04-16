@@ -1,18 +1,16 @@
 # Fixing I2C
 
-Used for tricking our hardware into unlocking Windows functionality inside macOS, mainly used for I2C devices.
+**Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we've decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as [Dortania](https://github.com/dortania).**
 
-No configuration required, just drop the prebuilt file into your EFI: [SSDT-XOSI](https://github.com/khronokernel/Getting-Started-With-ACPI/blob/master/extra-files/SSDT-XOSI.aml)
+Links to the new sites:
 
-Do note that this SSDT requires an ACPI patch as well:
+* [OpenCore Desktop Guide](https://dortania.github.io/OpenCore-Desktop-Guide/)
+* [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)
+* [GPU Buyers Guide](https://dortania.github.io/GPU-Buyers-Guide/)
+* [Wireless Buyers Guide](https://dortania.github.io/Wireless-Buyers-Guide/)
+* [Anti-Hackintosh Buyers Guide](https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/)
 
-Under `ACPI -> Patch`:
 
-| Comment | String | Change _OSI to XOSI |
-| :--- | :--- | :--- |
-| Enabled | String | YES |
-| Count | Number | 0 |
-| Limit | Nuber | 0 |
-| Find | Data | 5f4f5349 |
-| Replace | Data | 584f5349 |
+If you're looking for this guide, you can find it here:
 
+# [Getting Started with ACPI](https://dortania.github.io/Getting-Started-With-ACPI/)

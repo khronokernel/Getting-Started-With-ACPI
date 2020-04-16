@@ -409,111 +409,17 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="fixing-embedded-controller-desktop">Fixing Embedded Controller (Desktop)</h1>
-<p>What we&apos;ll be doing is hiding our actual EC and creating a fake Embedded Comtroller for macOS to play with.</p>
-<p>To find out what EC you have, open your decompiled DSDT and search for <code>PNP0C09</code>. This should give you a result like this:</p>
-<p><img src="https://i.imgur.com/lQ4kpb9.png" alt=""></p>
-<p>As you can see our <code>PNP0C09</code> is found within the <code>Device (EC0)</code> meaning this is the device we want to hide from macOS(others may find <code>H_EC</code>, <code>ECDV</code>, etc, everyone&apos;s systems will be different). Now grab our SSDT-EC and uncomment the EC0 function(remove the <code>/*</code> and <code>*/</code> around it):</p>
+<p><strong>Attention to all users, please note this guide and other khronokernel sites will be shutting down on April 16th, 2020. Reason for this is we&apos;ve decided to move the guides to a dedicated organization to help simplify the hackintosh process and provide a single, trusted source for hackintosh information. This new organization will be known as <a href="https://github.com/dortania" target="_blank">Dortania</a>.</strong></p>
+<p>Links to the new sites:</p>
 <ul>
-<li><a href="https://github.com/acidanthera/OpenCorePkg/blob/master/Docs/AcpiSamples/SSDT-EC-USBX.dsl" target="_blank">SSDT-EC-USBX</a><ul>
-<li>For Skylake and newer and all AMD systems</li>
+<li><a href="https://dortania.github.io/OpenCore-Desktop-Guide/" target="_blank">OpenCore Desktop Guide</a></li>
+<li><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></li>
+<li><a href="https://dortania.github.io/GPU-Buyers-Guide/" target="_blank">GPU Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Wireless-Buyers-Guide/" target="_blank">Wireless Buyers Guide</a></li>
+<li><a href="https://dortania.github.io/Anti-Hackintosh-Buyers-Guide/" target="_blank">Anti-Hackintosh Buyers Guide</a></li>
 </ul>
-</li>
-<li><a href="https://github.com/acidanthera/OpenCorePkg/blob/master/Docs/AcpiSamples/SSDT-EC.dsl" target="_blank">SSDT-EC</a><ul>
-<li>For Broadwell and older</li>
-</ul>
-</li>
-</ul>
-<pre><code class="lang-text">/* &lt;- REMOVE THIS
-External (_SB_.PCI0.LPCB.EC0, DeviceObj) &lt;- Rename this
-
-   Scope (\_SB.PCI0.LPCB.EC0) &lt;- Rename this
-   {   
-      Method (_STA, 0, NotSerialized) // _STA: Status
-      {
-         If (_OSI (&quot;Darwin&quot;)) // Darwin = macOS
-         {
-            Return (0) // Hides our real EC only when in macOS
-         }
-         Else
-      {
-      Return (0x0F)
-     }
-  }
-}
-*/ &lt;- REMOVE THIS
-</code></pre>
-<p>But looking back at the screenshot above we notice something, our ACPI path is different: <code>PC00.LPC0</code> vs <code>PCI0.LPCB</code>. This is very important especially when you&apos;re dealing with Intel consumer vs Intel HEDT vs AMD, <code>PC00.LPC0</code> is common on Intel HEDT while <code>PCI0.SBRG</code> is common on AMD. And they even come with name variation such as  <code>EC0</code>, <code>H_EC</code>, <code>PGEC</code> and <code>ECDV</code>, so there can&apos;t be a one size fits all SSDT, <strong>always verify your path and device. DO NOT ASSUME</strong>.</p>
-<ul>
-<li>Finding the LowPinCount path: <ul>
-<li>Intel: Search <code>Name (_ADR, 0x001F0000)</code></li>
-<li>AMD: Search <code>Name (_ADR, 0x00140003)</code></li>
-</ul>
-</li>
-<li>Finding the PCI path: <ul>
-<li>Intel: Search <code>PNP0A08</code> (If multiple show up, use the first one)</li>
-<li>AMD: Assume <code>PCI0</code>(most AMD DSDTs don&apos;t declare the PCI path directly)</li>
-</ul>
-</li>
-</ul>
-<p>And make sure to scroll to the bottom as the new Fake EC function also need the correct path to replace the old EC. <strong>Do not rename <code>Device (EC)</code></strong>, this is our fake EC we&apos;re using for macOS to play with so leave <code>Device (EC)</code> alone. <strong>Just change the path!</strong></p>
-<blockquote>
-<p>What happens if multiple <code>PNP0C09</code> show up</p>
-</blockquote>
-<p>When this happens you need to figure out which is the main and which is not, it&apos;s fairly easy to figure out. Check each controller for the following properties:</p>
-<ul>
-<li><code>_HID</code> (Hardware ID)</li>
-<li><code>_CRS</code> (Current Resource Settings)</li>
-<li><code>_GPE</code> (General Purpose Events)</li>
-</ul>
-<blockquote>
-<p>What happens if no <code>PNP0C09</code> show up?</p>
-</blockquote>
-<p>So what this means: EC faking is not mandatory for booting, instead only <strong>recommended for proper USB power</strong>. </p>
-<p>So how do I make an SSDT without an EC? Well we&apos;ll only create a Fake EC for macOS to play with, this allows for AppleBusPowerController to load and handle our USB properly. To make the actual SSDT, its <em>almost</em> plug and play as no uncommenting needed. The main thing that needs to be changed:</p>
-<ul>
-<li>LowPinCount path</li>
-<li>PCI path</li>
-</ul>
-<p>We want to make sure the SSDT hooks into our DSDT correctly so we need to make sure the ACPI path is correct:</p>
-<ul>
-<li>Finding the LowPinCount path: <ul>
-<li>Intel: Search <code>Name (_ADR, 0x001F0000)</code></li>
-<li>AMD: Search <code>Name (_ADR, 0x00140003)</code></li>
-</ul>
-</li>
-<li>Finding the PCI path: <ul>
-<li>Intel: Search <code>PNP0A08</code> (If multiple show up, use the first one)</li>
-<li>AMD: Assume <code>PCI0</code>(most AMD DSDTs don&apos;t declare the PCI path directly)</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://cdn.discordapp.com/attachments/456913818467958789/670148514197667840/Screen_Shot_2020-01-23_at_11.08.30_PM.png" alt=""></p>
-<p>Once you find out, change <code>PCI0.LPCB</code> to your correct path:</p>
-<pre><code class="lang-text">Scope (\_SB.PC00.LPC0) &lt;- Rename this
-{
-    Device (EC) &lt;- DO NOT RENAME THIS
-    {
-        Name (_HID, &quot;ACID0001&quot;)  // _HID: Hardware ID
-        Method (_STA, 0, NotSerialized)  // _STA: Status
-        {
-            If (_OSI (&quot;Darwin&quot;))
-            {
-                Return (0x0F) // Enable our Fake EC only when in macOS
-            }
-            Else
-            {
-                Return (Zero)
-            }
-        }
-    }
-}
-</code></pre>
-<h2 id="correcting-usb-power">Correcting USB Power</h2>
-<blockquote>
-<p>Hey what about USBX? Do I need to do anything?</p>
-</blockquote>
-<p>USBX is universal across all systems, it just creates a USBX device that forces USB power properties. This is crucial for fixing Mics, DACs, Webcams, Bluetooth Dongles and other high power draw devices. This is not mandatory to boot but should be added in post-install if not before. Note that USBX is only used on skylake+ systems, Broadwell and older can ignore and that USBX requires a patched EC to function correctly</p>
-<h2 id="now-youre-ready-to-compile-the-ssdt"><a href="../Manual/compile.html">Now you&apos;re ready to compile the SSDT!</a></h2>
+<p>If you&apos;re looking for this guide, you can find it here:</p>
+<h1 id="getting-started-with-acpi"><a href="https://dortania.github.io/Getting-Started-With-ACPI/" target="_blank">Getting Started with ACPI</a></h1>
 
                                 
                                 </section>
@@ -557,7 +463,7 @@ External (_SB_.PCI0.LPCB.EC0, DeviceObj) &lt;- Rename this
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Embedded Controllers","level":"3.1","depth":1,"next":{"title":"Disabling desktop dGPUs","level":"3.2","depth":1,"path":"Desktops/desktop-disable.md","ref":"Desktops/desktop-disable.md","articles":[]},"previous":{"title":"Decompiling and Compiling","level":"2.2","depth":1,"path":"Manual/compile.md","ref":"Manual/compile.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Desktops/desktop-ec.md","mtime":"2020-04-05T00:41:26.348Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-05T00:42:19.869Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Embedded Controllers","level":"3.1","depth":1,"next":{"title":"Disabling desktop dGPUs","level":"3.2","depth":1,"path":"Desktops/desktop-disable.md","ref":"Desktops/desktop-disable.md","articles":[]},"previous":{"title":"Decompiling and Compiling","level":"2.2","depth":1,"path":"Manual/compile.md","ref":"Manual/compile.md","articles":[]},"dir":"ltr"},"config":{"plugins":["theme-default","-lunr","-search","search-plus","addcssjs","favicon-plus"],"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"},"pluginsConfig":{"output":"_book","addcssjs":{"css":[],"js":[]},"fontsettings":{"theme":"night","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"","output":"_book"},"highlight":{},"favicon":"/icons/favicon.ico","appleTouchIconPrecomposed152":"/icons/appleTouchIconPrecomposed152.png","sharing":{"facebook":false,"twitter":false,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":[]},"theme-default":{"showLevel":false,"styles":{"ebook":"styles/ebook.css","epub":"styles/epub.css","mobi":"styles/mobi.css","pdf":"styles/pdf.css","print":"styles/print.css","website":"styles/website.css"}},"search-plus":{}},"theme":"default","pdf":{"pageBreaksBefore":"/","headerTemplate":null,"paperSize":"a4","margin":{"right":62,"left":62,"top":36,"bottom":36},"fontSize":12,"fontFamily":"Arial","footerTemplate":null,"chapterMark":"pagebreak","pageNumbers":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"links":{"sharing":{"google":false,"facebook":false,"twitter":false,"weibo":false,"all":false}},"gitbook":"*"},"file":{"path":"Desktops/desktop-ec.md","mtime":"2020-04-16T00:01:34.701Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-04-16T00:02:24.917Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
